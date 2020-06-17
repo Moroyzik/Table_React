@@ -1,12 +1,15 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
+import SimpleTable from "./table";
 
 function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
+        <p>
+          <SimpleTable/>
+        </p>
         <p>
           Edit <code>src/App.js</code> and save to reload.
         </p>
