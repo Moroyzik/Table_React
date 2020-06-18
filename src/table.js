@@ -19,8 +19,11 @@ function createData(name, age, isAdmin, coureses, wife) {
   return { name, age, isAdmin, coureses, wife };
 }
 
+const bool = false;
+const nothing = null;
+
 const rows = [
-  createData('John', 30, false, 'js', null),
+  createData('John', 30, `${bool}`, 'js', `${nothing}`),
   createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
   createData('Eclair', 262, 16.0, 24, 6.0),
   createData('Cupcake', 305, 3.7, 67, 4.3),
@@ -29,6 +32,8 @@ const rows = [
 
 export default function SimpleTable() {
   const classes = useStyles();
+
+
 
   return (
     <TableContainer component={Paper}>

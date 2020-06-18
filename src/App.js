@@ -1,7 +1,7 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
 import SimpleTable from "./table";
+import Post from './post';
 
 function App() {
   return (
@@ -10,9 +10,10 @@ function App() {
         <p>
           <SimpleTable/>
         </p>
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
+        
+        <div>
+          <Post/>
+        </div>
         <a
           className="App-link"
           href="https://reactjs.org"

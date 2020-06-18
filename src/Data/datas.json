@@ -1,0 +1,18 @@
+[
+    {
+        "name": "John",
+        "age": 3,
+        "isAdmin": false,
+        "courses": "js",
+        "wife": null
+    },
+
+    {
+        "name": "Dima",
+        "age": 15,
+        "isAdmin": false,
+        "courses": "js",
+        "wife": null
+    }
+
+]
