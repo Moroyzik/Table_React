@@ -1,0 +1,26 @@
+[
+    {
+        "id": 1,
+        "name": "John",
+        "age": 30,
+        "isAdmin": false,
+        "courses": "js",
+        "wife": null,
+        "edit": true,
+        "isDelete": true
+        
+    },
+
+    {   
+        "id": 2,
+        "name": "Dima",
+        "age": 15,
+        "isAdmin": false,
+        "courses": "js",
+        "wife": null,
+        "edit": false,
+        "isDelete": true
+        
+    }
+
+]
