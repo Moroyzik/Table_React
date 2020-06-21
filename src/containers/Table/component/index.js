@@ -1,17 +1,16 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useState } from "react";
 
+import { makeStyles } from "@material-ui/core/styles";
 
-import { makeStyles } from '@material-ui/core/styles';
+import Table from "@material-ui/core/Table";
+import TableBody from "@material-ui/core/TableBody";
+import TableCell from "@material-ui/core/TableCell";
+import TableContainer from "@material-ui/core/TableContainer";
+import TableHead from "@material-ui/core/TableHead";
+import TableRow from "@material-ui/core/TableRow";
+import Paper from "@material-ui/core/Paper";
 
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
-
-import rows from '../datas.json';
+import rows from "../datas.json";
 import { Button } from "@material-ui/core";
 
 const useStyles = makeStyles({
@@ -20,10 +19,10 @@ const useStyles = makeStyles({
     },
 });
 
-
-function getTableRows() {
-    return rows.map((row) => <TableRow key={row.id}>{getRowContent(row)}</TableRow>)
-
+function getTableRows(rows) {
+    return rows.map((row) => (
+        <TableRow key={row.id}>{getRowContent(row)}</TableRow>
+    ));
 }
 
 function getRowContent(row) {
@@ -35,38 +34,41 @@ function getRowContent(row) {
 }
 // TODO switch(key), func(value, key), return button delete по id delete
 // delete
-function getDelete() {
-    return rows
-      .filter((key) => key.isDelete !== true)
-      .map((row) => <TableRow key={row.id}>{getRowContent(row)}</TableRow>);
-  }
 
-const getTableCell = (value) => <TableCell align="right" key={`cell${value}`}>{`${value}`}</TableCell>
+const getTableCell = (value) => (
+    <TableCell align="right" key={`cell${value}`}>{`${value}`}</TableCell>
+);
 
-function getTableHeader() {
+function getTableHeader(rows) {
     let headers = rows[0];
-    return Object.keys(headers).map((value) => <TableCell align="right" key={`header${value}`}>{value}</TableCell>);
+    return (
+        headers &&
+        Object.keys(headers).map((value) => (
+            <TableCell align="right" key={`header${value}`}>
+                {value}
+            </TableCell>
+        ))
+    );
 }
-
-
 
 function SimpleTable() {
     const classes = useStyles();
 
+    const [data, setData] = useState(rows);
+
+    const handleDelete = () =>
+        setData(data.filter((key) => key.isDelete !== true));
+
     return (
         <Fragment>
-            <Button>Edit</Button>
-            <Button onClick={getDelete()}>Delete</Button>
+            <Button variant="contained" color="primary">Edit</Button>
+            <Button variant="contained" color="secondary" onClick={handleDelete}>Delete</Button>
             <TableContainer component={Paper}>
                 <Table className={classes.table} aria-label="simple table">
                     <TableHead>
-                        <TableRow>
-                            {getTableHeader()}
-                        </TableRow>
+                        <TableRow>{getTableHeader(data)}</TableRow>
                     </TableHead>
-                    <TableBody>
-                        {getTableRows()}
-                    </TableBody>
+                    <TableBody>{getTableRows(data)}</TableBody>
                 </Table>
             </TableContainer>
         </Fragment>
