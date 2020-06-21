@@ -34,7 +34,12 @@ function getRowContent(row) {
     return content;
 }
 // TODO switch(key), func(value, key), return button delete по id delete
-// 
+// delete
+function getDelete() {
+    return rows
+      .filter((key) => key.isDelete !== true)
+      .map((row) => <TableRow key={row.id}>{getRowContent(row)}</TableRow>);
+  }
 
 const getTableCell = (value) => <TableCell align="right" key={`cell${value}`}>{`${value}`}</TableCell>
 
@@ -50,9 +55,8 @@ function SimpleTable() {
 
     return (
         <Fragment>
-            <Button>Add</Button>
-            <Button>Delete</Button>
             <Button>Edit</Button>
+            <Button onClick={getDelete()}>Delete</Button>
             <TableContainer component={Paper}>
                 <Table className={classes.table} aria-label="simple table">
                     <TableHead>

@@ -16,7 +16,19 @@
         "name": "Dima",
         "age": 15,
         "isAdmin": false,
-        "courses": "js",
+        "courses": "python",
+        "wife": null,
+        "edit": false,
+        "isDelete": true
+        
+    },
+
+    {   
+        "id": 3,
+        "name": "Mia",
+        "age": 23,
+        "isAdmin": true,
+        "courses": "c++",
         "wife": null,
         "edit": false,
         "isDelete": true
