@@ -10,6 +10,8 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 
+import TextField from '@material-ui/core/TextField';
+
 import rows from "../datas.json";
 import { Button } from "@material-ui/core";
 
@@ -20,20 +22,17 @@ const useStyles = makeStyles({
     },
 });
 
-const user = [
-   
-]
 
-function getTableRows(rows, handleDelete) {
+function getTableRows(rows, handleDelete, currentlyEditing) {
     return rows.map((row) => (
-        <TableRow key={row.id}>{getRowContent(row, handleDelete)}</TableRow>
+        <TableRow key={row.id}>{getRowContent(row, handleDelete, currentlyEditing)}</TableRow>
     ));
 }
 
-function getRowContent(row, handleDelete) {
+function getRowContent(row, handleDelete, handleEdit) {
     let content = [];
     for (let key in row) {
-        content.push(getTableCell(row[key], key, row['id'], handleDelete));
+        content.push(getTableCell(row[key], key, row['id'], handleDelete, handleEdit));
     }
     return content;
 }
@@ -42,10 +41,12 @@ function getRowContent(row, handleDelete) {
 
 
 
-const getTableCell = (value, key, id, handleDelete) => {
+const getTableCell = (value, key, id, handleDelete, handleEdit, editId) => {
     switch (key) {
         case 'isDelete':
-            return <TableCell align="right" key={`cellDelete${id}`}><Button variant="contained" color="secondary" onClick={()=>handleDelete(id)}>Delete</Button></TableCell>
+            return <TableCell align="right" key={`cellDelete${id}`}><Button variant="contained" color="secondary" onClick={() => handleDelete(id)}>Delete</Button></TableCell>
+        case 'edit':
+            return <TableCell align="right" key={`cellEdit${id}`}><Button variant="contained" color="primary" onClick={() => handleEdit(id, editId)}>Edit</Button></TableCell>
         default: return (
             <TableCell align="right" key={`cell${key}${id}`}>{`${value}`}</TableCell>
         );
@@ -70,30 +71,39 @@ function SimpleTable() {
 
     const [data, setData] = useState(rows);
 
+    // action remove row 
     const handleDelete = (id) => {
-        
+
         setData(data.filter((item) => item.id !== id));
-        
-        let test = data.filter((item) => item.id !== id)
-        console.log(test)
+
     }
 
+    const handleEdit = (id, editId) => {
+        let changedRows;
+        if (editId) {
+            changedRows = rows.map(row => (editId[row.id] ? { ...row, ...editId[row.id] } : row));
+        }
+        setData(changedRows);
+    }
+    
+
+    // add row
     const handleAdd = () => {
-       let id = Math.max.apply(Math, data.map(item => Number(item.id)) )
+        let id = Math.max.apply(Math, data.map(item => Number(item.id)))
 
-       let cellData =  {
-        id: id + 1,
-        name: "Max",
-        age: 20,
-        isAdmin: true,
-        courses: "go",
-        wife: null,
-        edit: true,
-        isDelete: true
-    }
+        let cellData = {
+            id: id + 1,
+            name: "Max",
+            age: 20,
+            isAdmin: true,
+            courses: "go",
+            wife: null,
+            edit: true,
+            isDelete: true
+        }
 
-    const newData = [...data, ...[cellData]]
-      setData(newData)
+        const newData = [...data, ...[cellData]]
+        setData(newData)
     }
 
     return (
@@ -104,7 +114,8 @@ function SimpleTable() {
                     <TableHead>
                         <TableRow>{getTableHeader(data)}</TableRow>
                     </TableHead>
-                    <TableBody>{getTableRows(data, handleDelete)}</TableBody>
+                    <TableBody>{getTableRows(data, handleDelete, handleEdit)}</TableBody>
+                    
                 </Table>
             </TableContainer>
         </Fragment>
