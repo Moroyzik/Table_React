@@ -1,6 +1,6 @@
-import React from 'react';
-import './App.css';
-import { SimpleTable } from "./containers/Table/index";
+import React from "react";
+import "./App.css";
+import { SimpleTable } from "./containers";
 
 function App() {
   return (
