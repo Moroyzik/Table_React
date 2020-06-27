@@ -10,6 +10,7 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import { Input } from "@material-ui/core";
+import Checkbox from '@material-ui/core/Checkbox';
 
 import rows from "../datas.json";
 import { Button } from "@material-ui/core";
@@ -21,26 +22,35 @@ const useStyles = makeStyles({
 });
 
 function getTableRows(rows, handleDelete, currentlyEditing, setFormInputs) {
-  return rows.map((row) => (
+  return rows.map((row, id) => (
     <TableRow onClick={() => setFormInputs(row)} key={row.id}>
-      {getRowContent(row, handleDelete, currentlyEditing)}
+      {getRowContent(row, handleDelete, currentlyEditing, id)}
     </TableRow>
   ));
 }
 
-function getRowContent(row, handleDelete, handleEdit) {
+function getRowContent(row, handleDelete, handleEdit, id) {
   let content = [];
   for (let key in row) {
     content.push(
-      getTableCell(row[key], key, row["id"], handleDelete, handleEdit)
+      getTableCell(key, id, handleDelete, handleEdit, row)
     );
   }
   return content;
 }
 
-// edit строк, debounce; onChange и подключить redux; lodash попробовать
 
-const getTableCell = (value, key, id, handleDelete, handleEdit, editId) => {
+// debounce убрать постоянные вызовы в консоли, булевские значения убрать из редактирования и id, вместо инпут сделать чекбокс, redux;
+
+//c редаксом подключить json
+
+// GraphQL почитать
+
+// стилизация таблицы (с числами строка подсвечивается)
+
+
+const getTableCell = (key, id, handleDelete, handleEdit, row, checked, handleChange) => {
+  const value = row[key];
   switch (key) {
     case "isDelete":
       return (
@@ -54,27 +64,42 @@ const getTableCell = (value, key, id, handleDelete, handleEdit, editId) => {
           </Button>
         </TableCell>
       );
+
+    case "isAdmin":
+      return (
+        <TableCell align="right" key={`cellisAdmin${id}`}>
+          <Checkbox
+            checked={checked}
+            onChange={handleChange}
+            inputProps={{ 'aria-label': 'primary checkbox' }}
+          />
+        </TableCell>
+      );
+
     case "edit":
       return (
         <TableCell align="right" key={`cellEdit${id}`}>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={() => handleEdit(id, editId)}
-          >
-            Edit
-          </Button>
+          <Checkbox
+            checked={checked}
+            onChange={handleChange}
+            inputProps={{ 'aria-label': 'primary checkbox' }}
+          />
         </TableCell>
       );
+
     default:
       return (
         <TableCell
           align="right"
           key={`cell${key}${id}`}
-        >{`${value}`}</TableCell>
+        ><Input value={value} disabled={row['edit']} onChange={(e) => {
+          handleEdit(id, key, e.target.value)
+        }} /></TableCell>
       );
   }
 };
+
+
 function getTableHeader(rows) {
   let headers = rows[0];
   return (
@@ -96,6 +121,9 @@ const Form = ({ name, changeName, age, changeAge, courses, changeCourses }) => {
     </>
   );
 };
+
+//checkbox
+
 
 const SimpleTable = () => {
   const classes = useStyles();
@@ -120,14 +148,11 @@ const SimpleTable = () => {
     setData(data.filter((item) => item.id !== id));
   };
 
-  const handleEdit = (id, editId) => {
-    let changedRows;
-    if (editId) {
-      changedRows = rows.map((row) =>
-        editId[row.id] ? { ...row, ...editId[row.id] } : row
-      );
-    }
-    setData(changedRows);
+  const handleEdit = (id, key, value) => {
+    data[id][key] = value
+    let newData = [...data]
+    console.log(...data)
+    setData(newData)
   };
 
   // add row
@@ -143,7 +168,7 @@ const SimpleTable = () => {
       age: age,
       isAdmin: true,
       courses: courses,
-      wife: null,
+      wife: "",
       edit: true,
       isDelete: true,
     };
@@ -154,6 +179,14 @@ const SimpleTable = () => {
 
   return (
     <>
+      <Form
+        name={name}
+        changeName={handleChangeName}
+        age={age}
+        changeAge={handleChangeAge}
+        courses={courses}
+        changeCourses={handleChangeCourses}
+      />
       <Button variant="contained" color="primary" onClick={handleAdd}>
         Add
       </Button>
@@ -164,17 +197,10 @@ const SimpleTable = () => {
           </TableHead>
           <TableBody>
             {getTableRows(data, handleDelete, handleEdit, setFormInputs)}
+
           </TableBody>
         </Table>
       </TableContainer>
-      <Form
-        name={name}
-        changeName={handleChangeName}
-        age={age}
-        changeAge={handleChangeAge}
-        courses={courses}
-        changeCourses={handleChangeCourses}
-      />
     </>
   );
 };
