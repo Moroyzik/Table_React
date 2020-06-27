@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { DebounceInput } from 'react-debounce-input';
 
 import { makeStyles } from "@material-ui/core/styles";
 
@@ -40,7 +41,7 @@ function getRowContent(row, handleDelete, handleEdit, id) {
 }
 
 
-// debounce убрать постоянные вызовы в консоли, булевские значения убрать из редактирования и id, вместо инпут сделать чекбокс, redux;
+// debounce убрать постоянные вызовы в консоли---, булевские значения убрать из редактирования и id---, вместо инпут сделать чекбокс, redux;
 
 //c редаксом подключить json
 
@@ -62,6 +63,13 @@ const getTableCell = (key, id, handleDelete, handleEdit, row, checked, handleCha
           >
             Delete
           </Button>
+        </TableCell>
+      );
+
+    case "id":
+      return (
+        <TableCell align="right" key={`cellId${id}`}>
+          {id}
         </TableCell>
       );
 
@@ -92,7 +100,7 @@ const getTableCell = (key, id, handleDelete, handleEdit, row, checked, handleCha
         <TableCell
           align="right"
           key={`cell${key}${id}`}
-        ><Input value={value} disabled={row['edit']} onChange={(e) => {
+        ><DebounceInput minLength={1} debounceTimeout={1000} value={value} disabled={row['edit']} onChange={(e) => {
           handleEdit(id, key, e.target.value)
         }} /></TableCell>
       );
@@ -126,6 +134,7 @@ const Form = ({ name, changeName, age, changeAge, courses, changeCourses }) => {
 
 
 const SimpleTable = () => {
+
   const classes = useStyles();
 
   const [data, setData] = useState(rows);
@@ -169,7 +178,7 @@ const SimpleTable = () => {
       isAdmin: true,
       courses: courses,
       wife: "",
-      edit: true,
+      edit: false,
       isDelete: true,
     };
 
