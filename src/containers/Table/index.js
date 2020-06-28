@@ -1,4 +1,3 @@
+import SimpleTable from "./component";
 
-import SimpleTable from './component/index'
-
-export {SimpleTable}
+export { SimpleTable };

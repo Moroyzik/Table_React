@@ -1,20 +1,21 @@
 import React, { useState } from "react";
-import { DebounceInput } from 'react-debounce-input';
+import { useSelector, useDispatch } from "react-redux";
+import { DebounceInput } from "react-debounce-input";
+import {
+  Input,
+  Button,
+  Checkbox,
+  Paper,
+  TableRow,
+  TableHead,
+  TableContainer,
+  TableCell,
+  TableBody,
+  Table,
+  makeStyles,
+} from "@material-ui/core";
 
-import { makeStyles } from "@material-ui/core/styles";
-
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
-import TableContainer from "@material-ui/core/TableContainer";
-import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
-import Paper from "@material-ui/core/Paper";
-import { Input } from "@material-ui/core";
-import Checkbox from '@material-ui/core/Checkbox';
-
-import rows from "../datas.json";
-import { Button } from "@material-ui/core";
+import { addUser, deleteUser, editUser } from "../../../ducks";
 
 const useStyles = makeStyles({
   table: {
@@ -33,13 +34,10 @@ function getTableRows(rows, handleDelete, currentlyEditing, setFormInputs) {
 function getRowContent(row, handleDelete, handleEdit, id) {
   let content = [];
   for (let key in row) {
-    content.push(
-      getTableCell(key, id, handleDelete, handleEdit, row)
-    );
+    content.push(getTableCell(key, id, handleDelete, handleEdit, row));
   }
   return content;
 }
-
 
 // debounce убрать постоянные вызовы в консоли---, булевские значения убрать из редактирования и id---, вместо инпут сделать чекбокс, redux;
 
@@ -49,8 +47,15 @@ function getRowContent(row, handleDelete, handleEdit, id) {
 
 // стилизация таблицы (с числами строка подсвечивается)
 
-
-const getTableCell = (key, id, handleDelete, handleEdit, row, checked, handleChange) => {
+const getTableCell = (
+  key,
+  id,
+  handleDelete,
+  handleEdit,
+  row,
+  checked,
+  handleChange
+) => {
   const value = row[key];
   switch (key) {
     case "isDelete":
@@ -79,7 +84,7 @@ const getTableCell = (key, id, handleDelete, handleEdit, row, checked, handleCha
           <Checkbox
             checked={checked}
             onChange={handleChange}
-            inputProps={{ 'aria-label': 'primary checkbox' }}
+            inputProps={{ "aria-label": "primary checkbox" }}
           />
         </TableCell>
       );
@@ -90,23 +95,27 @@ const getTableCell = (key, id, handleDelete, handleEdit, row, checked, handleCha
           <Checkbox
             checked={checked}
             onChange={handleChange}
-            inputProps={{ 'aria-label': 'primary checkbox' }}
+            inputProps={{ "aria-label": "primary checkbox" }}
           />
         </TableCell>
       );
 
     default:
       return (
-        <TableCell
-          align="right"
-          key={`cell${key}${id}`}
-        ><DebounceInput minLength={1} debounceTimeout={1000} value={value} disabled={row['edit']} onChange={(e) => {
-          handleEdit(id, key, e.target.value)
-        }} /></TableCell>
+        <TableCell align="right" key={`cell${key}${id}`}>
+          <DebounceInput
+            minLength={1}
+            debounceTimeout={1000}
+            value={value}
+            disabled={row["edit"]}
+            onChange={(e) => {
+              handleEdit(id, key, e.target.value);
+            }}
+          />
+        </TableCell>
       );
   }
 };
-
 
 function getTableHeader(rows) {
   let headers = rows[0];
@@ -132,12 +141,11 @@ const Form = ({ name, changeName, age, changeAge, courses, changeCourses }) => {
 
 //checkbox
 
-
 const SimpleTable = () => {
-
   const classes = useStyles();
 
-  const [data, setData] = useState(rows);
+  const dispatch = useDispatch();
+  const data = useSelector((state) => state.users);
 
   const [name, setName] = useState("");
   const [age, setAge] = useState("");
@@ -154,14 +162,14 @@ const SimpleTable = () => {
 
   // action remove row
   const handleDelete = (id) => {
-    setData(data.filter((item) => item.id !== id));
+    dispatch(deleteUser(data.filter((item) => item.id !== id)));
   };
 
   const handleEdit = (id, key, value) => {
-    data[id][key] = value
-    let newData = [...data]
-    console.log(...data)
-    setData(newData)
+    data[id][key] = value;
+    let newData = [...data];
+    console.log(...data);
+    dispatch(editUser(newData));
   };
 
   // add row
@@ -182,8 +190,7 @@ const SimpleTable = () => {
       isDelete: true,
     };
 
-    const newData = [...data, cellData];
-    setData(newData);
+    dispatch(addUser(cellData));
   };
 
   return (
@@ -206,7 +213,6 @@ const SimpleTable = () => {
           </TableHead>
           <TableBody>
             {getTableRows(data, handleDelete, handleEdit, setFormInputs)}
-
           </TableBody>
         </Table>
       </TableContainer>
