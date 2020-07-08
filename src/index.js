@@ -6,7 +6,7 @@ import * as serviceWorker from "./serviceWorker";
 import { createStore } from "redux";
 import { Provider } from "react-redux";
 
-import rootReducer from "./ducks";
+import rootReducer from "./containers/Table/actions";
 
 const store = createStore(
   rootReducer,

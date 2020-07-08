@@ -15,7 +15,7 @@ import {
   makeStyles,
 } from "@material-ui/core";
 
-import { addUser, deleteUser, editUser } from "../../../ducks";
+import { addUser, updateUser } from "../../../containers/Table/actions";
 
 const useStyles = makeStyles({
   table: {
@@ -162,14 +162,15 @@ const SimpleTable = () => {
 
   // action remove row
   const handleDelete = (id) => {
-    dispatch(deleteUser(data.filter((item) => item.id !== id)));
+    dispatch(updateUser(data.filter((item) => item.id !== id)));
   };
-
+  
+  // action edit row
   const handleEdit = (id, key, value) => {
     data[id][key] = value;
     let newData = [...data];
     console.log(...data);
-    dispatch(editUser(newData));
+    dispatch(updateUser(newData));
   };
 
   // add row

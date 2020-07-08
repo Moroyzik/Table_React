@@ -1,4 +1,4 @@
-import json from "../../constants/datas.json";
+import json from "../../../constants/datas.json";
 
 const initialState =  json;
 
@@ -6,9 +6,7 @@ export const usersReducer = (state = initialState, action) => {
   switch (action.type) {
     case "add":
       return [...state, action.payload];
-    case "delete":
-      return action.payload;
-    case "edit":
+    case "update":
       return action.payload;
     default:
       return state;
@@ -20,12 +18,8 @@ export const addUser = (userData) => ({
   payload: userData,
 });
 
-export const deleteUser = (newData) => ({
-  type: "delete",
+export const updateUser = (newData) => ({
+  type: "update",
   payload: newData,
 });
 
-export const editUser = (newData) => ({
-  type: "edit",
-  payload: newData,
-});

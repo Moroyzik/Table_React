@@ -14,7 +14,8 @@
     "react-dom": "^16.13.1",
     "react-redux": "^7.2.0",
     "react-scripts": "3.4.1",
-    "redux": "^4.0.5"
+    "redux": "^4.0.5",
+    "redux-thunk": "^2.3.0"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -36,5 +37,11 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "main": "index.js",
+  "repository": "https://github.com/Moroyzik/Table_React.git",
+  "license": "MIT",
+  "devDependencies": {
+    "json-server": "^0.16.1"
   }
 }
