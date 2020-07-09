@@ -8,7 +8,7 @@ import { Provider } from "react-redux";
 import { composeWithDevTools } from 'redux-devtools-extension';
 import thunk from 'redux-thunk';
 
-import rootReducer from "./containers/Table/actions";
+import rootReducer from "./mainReducer";
 
 const logAction = store => {
   return next => {
@@ -22,7 +22,7 @@ const logAction = store => {
 
 const store = createStore(
   rootReducer,
-  composeWithDevTools(applyMiddleware(logAction))
+  composeWithDevTools(applyMiddleware(thunk))
 );
 
 ReactDOM.render(

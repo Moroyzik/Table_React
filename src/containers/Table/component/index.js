@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { DebounceInput } from "react-debounce-input";
 import {
@@ -14,8 +14,8 @@ import {
   Table,
   makeStyles,
 } from "@material-ui/core";
+import * as action from "../actions/index"
 
-import { addUser, updateUser } from "../../../containers/Table/actions";
 
 const useStyles = makeStyles({
   table: {
@@ -38,14 +38,8 @@ function getRowContent(row, handleDelete, handleEdit, id) {
   }
   return content;
 }
-
-// debounce убрать постоянные вызовы в консоли---, булевские значения убрать из редактирования и id---, вместо инпут сделать чекбокс, redux;
-
-//c редаксом подключить json
-
-// GraphQL почитать
-
-// стилизация таблицы (с числами строка подсвечивается)
+ 
+// скрин в скайпе, нормальное название функций comlexAction, удалить комменты, которые не юзаются, классовый пожход убрать, загрузить header на сайте под user(redux), роутинг изучить
 
 const getTableCell = (
   key,
@@ -145,7 +139,11 @@ const SimpleTable = () => {
   const classes = useStyles();
 
   const dispatch = useDispatch();
-  const data = useSelector((state) => state.users);
+  const data = useSelector((state) => state.users.data);
+
+  useEffect(() => {
+    dispatch(action.complexActions())
+  }, [])
 
   const [name, setName] = useState("");
   const [age, setAge] = useState("");
@@ -162,7 +160,7 @@ const SimpleTable = () => {
 
   // action remove row
   const handleDelete = (id) => {
-    dispatch(updateUser(data.filter((item) => item.id !== id)));
+    dispatch(action.updateUser(data.filter((item) => item.id !== id)));
   };
   
   // action edit row
@@ -170,7 +168,7 @@ const SimpleTable = () => {
     data[id][key] = value;
     let newData = [...data];
     console.log(...data);
-    dispatch(updateUser(newData));
+    dispatch(action.updateUser(newData));
   };
 
   // add row
@@ -191,8 +189,10 @@ const SimpleTable = () => {
       isDelete: true,
     };
 
-    dispatch(addUser(cellData));
+    dispatch(action.addUser(cellData));
   };
+
+  //dispatch(actions.complexActions());
 
   return (
     <>
