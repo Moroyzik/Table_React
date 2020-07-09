@@ -10,9 +10,19 @@ import thunk from 'redux-thunk';
 
 import rootReducer from "./containers/Table/actions";
 
+const logAction = store => {
+  return next => {
+    return action => {
+      const result = next(action);
+      console.log(`Middleware ${JSON.stringify(result)}`);
+      return result;
+    } 
+  }
+}
+
 const store = createStore(
   rootReducer,
-  composeWithDevTools(applyMiddleware(thunk))
+  composeWithDevTools(applyMiddleware(logAction))
 );
 
 ReactDOM.render(
