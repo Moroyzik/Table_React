@@ -6,6 +6,3 @@ const rootReducer = combineReducers({
 });
 
 export default rootReducer;
-//export * from "../tableReducer";
-
-//ниже лежит

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { debounce } from "lodash";
 import { DebounceInput } from "react-debounce-input";
 import {
   Input,
@@ -39,7 +40,11 @@ function getRowContent(row, handleDelete, handleEdit, id) {
   return content;
 }
  
-// скрин в скайпе, нормальное название функций comlexAction, удалить комменты, которые не юзаются, классовый пожход убрать, загрузить header на сайте под user(redux), роутинг изучить
+// скрин в скайпе, 
+//-нормальное название функций comlexAction, 
+//-удалить комменты, которые не юзаются, 
+//-классовый пожход убрать, 
+//загрузить header на сайте под user(redux), роутинг изучить
 
 const getTableCell = (
   key,
@@ -133,16 +138,15 @@ const Form = ({ name, changeName, age, changeAge, courses, changeCourses }) => {
   );
 };
 
-//checkbox
-
 const SimpleTable = () => {
   const classes = useStyles();
 
   const dispatch = useDispatch();
   const data = useSelector((state) => state.users.data);
-
+  console.log(...data);
+  
   useEffect(() => {
-    dispatch(action.complexActions())
+    dispatch(action.dataFromServer())
   }, [])
 
   const [name, setName] = useState("");
@@ -156,6 +160,7 @@ const SimpleTable = () => {
   const setFormInputs = (row) => {
     setName(row.name);
     setAge(row.age);
+    setCourses(row.courses)
   };
 
   // action remove row
@@ -167,7 +172,6 @@ const SimpleTable = () => {
   const handleEdit = (id, key, value) => {
     data[id][key] = value;
     let newData = [...data];
-    console.log(...data);
     dispatch(action.updateUser(newData));
   };
 
@@ -191,8 +195,6 @@ const SimpleTable = () => {
 
     dispatch(action.addUser(cellData));
   };
-
-  //dispatch(actions.complexActions());
 
   return (
     <>

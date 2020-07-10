@@ -1,5 +1,3 @@
-import json from "../../constants/datas.json";
-
 const initialState =  {data: []};
 
 export const usersReducer = (state = initialState, action) => {
@@ -12,16 +10,6 @@ export const usersReducer = (state = initialState, action) => {
       return state;
   }
 };
-
-// export const addUser = (userData) => ({
-//   type: "add",
-//   payload: userData,
-// });
-
-// export const updateUser = (newData) => ({
-//   type: "update",
-//   payload: newData,
-// });
 
 
 

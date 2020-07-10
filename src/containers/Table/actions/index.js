@@ -8,16 +8,11 @@ export const updateUser = (newData) => ({
     payload: newData,
   });
   
-export const complexActions = () => async(dispatch, getState) => {
-    console.log("work");
-    console.log(dispatch);
-    console.log(getState());
+export const dataFromServer = () => async(dispatch, getState) => {
     let url = 'http://localhost:3001/posts'
     let resp = await fetch(url);
-    console.log(resp.status);
     if (resp.status === 200) {
       let data = await resp.json();
-      console.log(data);
       dispatch(updateUser(data));
     }
 }
