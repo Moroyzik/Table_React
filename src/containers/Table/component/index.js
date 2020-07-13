@@ -16,6 +16,7 @@ import {
   makeStyles,
 } from "@material-ui/core";
 import * as action from "../actions/index"
+import resultList from "../avatars/index"
 
 
 const useStyles = makeStyles({
@@ -74,6 +75,7 @@ const getTableCell = (
       return (
         <TableCell align="right" key={`cellId${id}`}>
           {id}
+          {resultList}
         </TableCell>
       );
 
@@ -163,19 +165,16 @@ const SimpleTable = () => {
     setCourses(row.courses)
   };
 
-  // action remove row
   const handleDelete = (id) => {
     dispatch(action.updateUser(data.filter((item) => item.id !== id)));
   };
   
-  // action edit row
   const handleEdit = (id, key, value) => {
     data[id][key] = value;
     let newData = [...data];
     dispatch(action.updateUser(newData));
   };
 
-  // add row
   const handleAdd = () => {
     let id = Math.max.apply(
       Math,
@@ -209,10 +208,13 @@ const SimpleTable = () => {
       <Button variant="contained" color="primary" onClick={handleAdd}>
         Add
       </Button>
+      {/* {resultList} */}
       <TableContainer component={Paper}>
         <Table className={classes.table} aria-label="simple table" width={30}>
           <TableHead>
-            <TableRow>{getTableHeader(data)}</TableRow>
+            <TableRow>
+              {getTableHeader(data)}
+              </TableRow>
           </TableHead>
           <TableBody>
             {getTableRows(data, handleDelete, handleEdit, setFormInputs)}

@@ -6,7 +6,6 @@ function App()  {
   
   return (
     <div className="App">
-      <div>Hello</div>
       <header className="App-header">
         <SimpleTable />
       </header>
