@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { debounce } from "lodash";
-import { DebounceInput } from "react-debounce-input";
 import {
   Input,
   Button,
@@ -56,6 +55,7 @@ const getTableCell = (
   checked,
   handleChange
 ) => {
+  // const delayedHandleChange = debounce(eventData => debounce(eventData), 5000);
   const value = row[key];
   switch (key) {
     case "isDelete":
@@ -104,13 +104,13 @@ const getTableCell = (
     default:
       return (
         <TableCell align="right" key={`cell${key}${id}`}>
-          <DebounceInput
-            minLength={1}
-            debounceTimeout={1000}
+          <Input
             value={value}
             disabled={row["edit"]}
             onChange={(e) => {
-              handleEdit(id, key, e.target.value);
+              handleEdit(id, key, e.target.value)
+              // let resultInput = handleEdit(id, key, e.target.value)
+              // delayedHandleChange(resultInput)
             }}
           />
         </TableCell>
